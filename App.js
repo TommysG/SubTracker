@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import home from "./Pages/home.js";
+import history from "./Pages/history.js";
 import { MaterialIcons } from '@expo/vector-icons';
 
 
@@ -12,7 +13,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="History" component={home}
+        <Tab.Screen name="History" component={history}
          options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="history" size={20} color="white" />
