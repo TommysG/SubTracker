@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./Pages/Home";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import history from "./Pages/history.js";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,7 +15,7 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen
           name="History"
-          component={Home}
+          component={history}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialIcons name="history" size={20} color="white" />
@@ -45,3 +46,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({});
+
+
+
+
