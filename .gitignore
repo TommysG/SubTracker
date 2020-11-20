@@ -1,2 +1,8 @@
 #node modules
 node_modules
+
+#service file
+subtracker-auth-d0e685f969dd.json
+
+#enviroment
+.env
