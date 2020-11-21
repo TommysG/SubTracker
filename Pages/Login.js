@@ -1,19 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import firebase from "../firebase";
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((value) => console.log("logged in"))
+      .catch((err) => alert(err));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.textInput}>
-        <TextInput placeholder="Email" />
+        <TextInput
+          placeholder="Email"
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+        />
       </View>
 
       <View style={styles.textInput}>
-        <TextInput secureTextEntry placeholder="Password" />
+        <TextInput
+          secureTextEntry
+          placeholder="Password"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+        />
       </View>
 
-      <Button title="Login" onPress={() => console.log("login")} />
+      <Button title="Login" onPress={login} />
 
       <View
         style={{

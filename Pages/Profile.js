@@ -1,43 +1,64 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, StatusBar, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TextInput,
+  Button,
+  ScrollView,
+} from "react-native";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectUser } from "../features/userSlice";
+import firebase from "../firebase";
 
 export default function Profile() {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
   return (
-    <ScrollView style={styles.container}>
-      {/* ACCOUNT SETTINGS HEADER */}
+    <View style={styles.container}>
+      <ScrollView
+        style={{ marginTop: StatusBar.currentHeight * 2, padding: 20 }}
+      >
+        {/* ACCOUNT SETTINGS HEADER */}
 
-      <Header
-        title="Account"
-        subtitle="Edit manage your account details"
-        icon={<Octicons name="settings" size={24} color="white" />}
-      />
+        <Header
+          title="Account"
+          subtitle="Edit manage your account details"
+          icon={<Octicons name="settings" size={24} color="white" />}
+        />
+        <Button title="Logout" onPress={() => firebase.auth().signOut()} />
 
-      {/* ACCOUNT SETTINGS CONTENT */}
-      <View style={styles.settingsItems}>
-        <MyInput title="Username" value="TommysGian" border />
-        <MyInput title="Email" value="tg@gmail.com" border />
-        <MyInput title="Phone" value="5435345423" border />
-        <MyInput title="Password" secure border />
-        <MyInput title="Confirm password" secure />
-      </View>
+        {/* ACCOUNT SETTINGS CONTENT */}
+        <View style={styles.settingsItems}>
+          <MyInput title="Username" value={user.displayName} border />
+          <MyInput title="Email" value={user.email} border />
+          <MyInput title="Phone" value="5435345423" border />
+          <MyInput title="Password" secure border />
+          <MyInput title="Confirm password" secure />
+        </View>
 
-      {/* FAQ HEADER */}
-      <Header
-        title="Help & Feedpack"
-        subtitle="Reach us with your feedback question"
-        icon={<MaterialIcons name="message" size={24} color="white" />}
-      />
+        {/* FAQ HEADER */}
+        <Header
+          title="Help & Feedpack"
+          subtitle="Reach us with your feedback question"
+          icon={<MaterialIcons name="message" size={24} color="white" />}
+        />
 
-      {/* FAQ CONTENT */}
-      <View style={styles.settingsItems}>
-        <MyButton title="FAQ and Videos" border />
-        <MyButton title="Contact us" />
-      </View>
-    </ScrollView>
+        {/* FAQ CONTENT */}
+        <View style={[styles.settingsItems, { marginBottom: 30 }]}>
+          <MyButton title="FAQ and Videos" border />
+          <MyButton title="Contact us" />
+          <MyButton title="Contact us" />
+          <MyButton title="Contact us" />
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -95,8 +116,8 @@ const MyInput = ({ title, value, secure, border }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight * 2,
-    padding: 20,
+    // paddingTop: StatusBar.currentHeight * 2,
+    //padding: 20,
   },
 
   settingHeader: {
