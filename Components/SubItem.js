@@ -6,15 +6,15 @@ export default function SubItem(props) {
     <View style={styles.container}>
       <Image
         source={{
-          width: 80,
-          height: 80,
+          width: 50,
+          height: 50,
           uri:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/1200px-Netflix_icon.svg.png",
         }}
       />
       <View style={styles.info}>
         <View>
-          <Text>{props.name}</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>{props.name}</Text>
           <Text>
             ${props.fee}/{props.period}
           </Text>
@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
     // backgroundColor: "yellow",
     flex: 1,
     flexDirection: "row",
-    marginVertical: 10,
-    paddingVertical: 15,
+    marginVertical: 5,
+    paddingVertical: 10,
   },
 
   info: {
     flex: 1,
     flexDirection: "row",
     // backgroundColor: "green",
-    padding: 10,
+    paddingHorizontal: 10,
   },
 
   dateContainer: {

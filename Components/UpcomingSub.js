@@ -10,7 +10,6 @@ export default function UpcomingSub() {
           source={{
             width: 50,
             height: 50,
-
             uri:
               "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/1200px-Netflix_icon.svg.png",
           }}
@@ -46,7 +45,6 @@ const styles = StyleSheet.create({
     maxWidth: 150,
     overflow: "hidden",
   },
-
   upcomingSub: {
     flexDirection: "row",
   },
