@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
   },
   displayName: { type: String, require: true },
   subscriptions: [subSchema],
+  history: [subSchema],
 });
 
 export default mongoose.model("User", userSchema);
