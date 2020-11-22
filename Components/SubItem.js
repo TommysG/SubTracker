@@ -2,32 +2,39 @@ import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function SubItem(props) {
+  const properDay = () => {
+    var dd = String(props.date.getDate()).padStart(2, "0");
+    var mm = String(props.date.getMonth() + 1).padStart(2, "0");
+    var today = mm + "/" + dd;
+    return today;
+  };
+  const image = props.image;
   return (
     <View style={styles.container}>
       <Image
+        style={{ borderRadius: 10 }}
         source={{
           width: 50,
           height: 50,
-          uri:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/1200px-Netflix_icon.svg.png",
+          uri: image,
         }}
       />
       <View style={styles.info}>
-        <View>
+        <TouchableOpacity onPress={props.onNamePress}>
           <Text style={{ fontWeight: "bold", fontSize: 16 }}>{props.name}</Text>
           <Text>
             ${props.fee}/{props.period}
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.dateContainer}>
-          <Text style={styles.date}>{props.date}</Text>
+          <Text style={styles.date}>{properDay()}</Text>
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={props.onPress}>
           <FontAwesome5 name="trash" size={22} color="black" />
         </TouchableOpacity>
       </View>
@@ -67,5 +74,5 @@ const styles = StyleSheet.create({
   button: {
     marginLeft: 15,
     paddingTop: 10,
-  }
+  },
 });

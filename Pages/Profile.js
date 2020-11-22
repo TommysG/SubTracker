@@ -12,41 +12,60 @@ import BottomSheet from "react-native-elements";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../features/userSlice";
 import firebase from "../firebase";
 
-export default function Profile() {
+import { createStackNavigator } from "@react-navigation/stack";
+import Category from "./Category.js";
+import Notification from "./Notification.js";
+import RateUs from "./RateUs.js";
+import Currency from "./Currency.js";
+
+const Stack = createStackNavigator();
+
+export default function HomeStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ gestureEnabled: true, gestureDirection: "horizontal" }}
+    >
+      <Stack.Screen
+        name="Porfile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Currency" component={Currency} />
+      <Stack.Screen name="Category" component={Category} />
+      <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen name="RateUs" component={RateUs} />
+    </Stack.Navigator>
+  );
+}
+
+export function Profile({ navigation }) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-
-  const [showNotif, setShowNotif] = useState(false);
-  
-  const toggleNotif = () => {
-    setShowNotif(!showNotif);
-  };
 
   return (
     <View style={styles.container}>
       <ScrollView
         style={{ marginTop: StatusBar.currentHeight * 2, padding: 20 }}
       >
-
-        
         {/* ACCOUNT SETTINGS HEADER */}
         <Header
           title="Account"
           subtitle="Edit manage your account details"
-          icon={<MaterialCommunityIcons name="account" size={24} color="white" />}
+          icon={
+            <MaterialCommunityIcons name="account" size={24} color="white" />
+          }
         />
-       
 
         {/* ACCOUNT SETTINGS CONTENT */}
         <View style={styles.settingsItems}>
           <MyInput title="Username" value={user.displayName} border />
-          <MyInput title="Email" value={user.email} border/>
+          <MyInput title="Email" value={user.email} border />
           <MyButton title="Logout" onPress={() => firebase.auth().signOut()} />
         </View>
 
@@ -56,12 +75,23 @@ export default function Profile() {
           subtitle="Edit application settings"
           icon={<Octicons name="settings" size={24} color="white" />}
         />
- 
+
         {/* APPLICATION SETTINGS CONTENT */}
         <View style={[styles.settingsItems, { marginBottom: 30 }]}>
-          <MyButton title="Currency" border />
-          <MyButton title="Categories" border />
-          <MyButton title="Notifications" onPress={() => toggleNotif()}/>
+          <MyButton
+            title="Currency: EUR"
+            border
+            onPress={() => navigation.navigate("Currency")}
+          />
+          <MyButton
+            title="Categories"
+            border
+            onPress={() => navigation.navigate("Category")}
+          />
+          <MyButton
+            title="Notifications"
+            onPress={() => navigation.navigate("Notification")}
+          />
         </View>
 
         {/* FAQ HEADER */}
@@ -75,15 +105,17 @@ export default function Profile() {
         <View style={[styles.settingsItems, { marginBottom: 30 }]}>
           <MyButton title="Help" border />
           <MyButton title="Give us feedback" border />
-          <MyButton title="Rate the app" />
+          <MyButton
+            title="Rate the app"
+            onPress={() => navigation.navigate("RateUs")}
+          />
         </View>
       </ScrollView>
-
     </View>
   );
 }
- 
-const MyButton = ({ title, border, onPress}) => {
+
+const MyButton = ({ title, border, onPress }) => {
   return (
     <TouchableOpacity
       style={[
@@ -91,7 +123,7 @@ const MyButton = ({ title, border, onPress}) => {
         { paddingTop: 15, paddingBottom: 20 },
         border && { borderBottomColor: "lightgray", borderBottomWidth: 1 },
       ]}
-      onPress = {onPress}
+      onPress={onPress}
     >
       <View style={{ flexDirection: "row" }}>
         <Text style={{ flex: 1 }}>{title}</Text>

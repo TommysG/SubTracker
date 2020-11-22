@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   Button,
   TouchableHighlight,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Searchbar } from "react-native-paper";
@@ -18,6 +19,9 @@ import SubItem from "../Components/SubItem";
 import UpcomingSub from "../Components/UpcomingSub";
 import NewSub from "./NewSub";
 import SubDetails from "./SubDetails";
+import axios from "../axios";
+import firebase from "../firebase";
+import { sub } from "react-native-reanimated";
 
 const info = [
   { id: "1", name: "Netflix", date: "21 May", fee: 15, period: "Monthly" },
@@ -48,6 +52,41 @@ export default function HomeStack() {
 }
 
 export function Home({ navigation }) {
+  const [subs, setSubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchSubs = () => {
+    axios({
+      method: "get",
+      url: `/subscriptions/${firebase.default.auth().currentUser.uid}`,
+    })
+      .then((response) => {
+        setSubs(response.data.subscriptions);
+        setLoading(false);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchSubs();
+  }, [subs]);
+
+  const deleteSub = (item) => {
+    axios({
+      method: "delete",
+      url: `subscriptions/delete?user_id=${
+        firebase.default.auth().currentUser.uid
+      }&item_id=${item._id}`,
+    })
+      .then((response) => {
+        console.log(response);
+        fetchSubs();
+      })
+      .catch((err) => alert(err));
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -91,21 +130,23 @@ export function Home({ navigation }) {
       <View style={{ flex: 1 }}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={info}
+          data={subs}
           style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={fetchSubs} />
+          }
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SubDetails", { item })}
-            >
-              <SubItem
-                name={item.name}
-                fee={item.fee}
-                period={item.period}
-                date={item.date}
-              />
-            </TouchableOpacity>
+            <SubItem
+              name={item.name}
+              fee={item.fee}
+              period={item.period}
+              date={item.date}
+              image={item.image}
+              onNamePress={() => navigation.navigate("SubDetails", { item })}
+              onPress={() => deleteSub(item)}
+            />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
         />
       </View>
     </View>

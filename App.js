@@ -14,6 +14,7 @@ import { selectUser, login, logout } from "./features/userSlice";
 
 import Home from "./Pages/Home";
 import SignUp from "./Pages/SignUp";
+import LandingPage from "./Pages/LandingPage.js";
 import Login from "./Pages/Login";
 import Profile from "./Pages/Profile.js";
 
@@ -47,7 +48,7 @@ function Auth() {
           );
         });
 
-        alert("Login");
+        alert("Καλησπέρα τι κάνεις εσύ?");
       } else {
         dispatch(logout());
       }
@@ -61,7 +62,8 @@ function Auth() {
       {user ? (
         <UserDashboard />
       ) : (
-        <Stack.Navigator initialRouteName="SignUp">
+        <Stack.Navigator initialRouteName="Landing">
+          <Stack.Screen name="Landing" component={LandingPage} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
