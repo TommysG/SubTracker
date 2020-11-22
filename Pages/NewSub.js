@@ -22,8 +22,10 @@ export default function NewSub() {
   const [showFirst, setShowFirst] = useState(false);
   const [showSecond, setShowSecond] = useState(false);
 
+
   const [subName, setSubName] = useState("");
   const [fee, setFee] = useState(0);
+  const [description, setDescription] = useState("");
 
   const onChangeFirst = (event, selectedDate) => {
     const currentDate = selectedDate || dateOne;
@@ -57,18 +59,19 @@ export default function NewSub() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.textBig}>Basic details</Text>
-        <Text>
-          This section contains the basic details of your subscription.
-        </Text>
-      </View>
-
       <View style={{ paddingBottom: 20 }}>
         <MyTextInput
           placeholder="e.g Netflix"
           title="Sub name"
           setText={setSubName}
+        />
+      </View>
+      
+      <View style={{ paddingBottom: 20 }}>
+        <MyTextInput
+          placeholder="e.g Family Netflix subscription"
+          title="Description"
+          setText={setDescription}
         />
       </View>
 
@@ -121,6 +124,7 @@ export default function NewSub() {
           <TextInput
             style={{ flex: 1, paddingLeft: 15, fontSize: 18 }}
             placeholder="e.g 5"
+            keyboardType="number-pad"
             onChangeText={(text) => setFee(text)}
           />
           <Picker

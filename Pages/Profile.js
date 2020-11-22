@@ -5,12 +5,14 @@ import {
   View,
   StatusBar,
   TextInput,
-  Button,
   ScrollView,
 } from "react-native";
+
+import BottomSheet from "react-native-elements";
 import { Octicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../features/userSlice";
@@ -20,49 +22,68 @@ export default function Profile() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
+  const [showNotif, setShowNotif] = useState(false);
+  
+  const toggleNotif = () => {
+    setShowNotif(!showNotif);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
         style={{ marginTop: StatusBar.currentHeight * 2, padding: 20 }}
       >
-        {/* ACCOUNT SETTINGS HEADER */}
 
+        
+        {/* ACCOUNT SETTINGS HEADER */}
         <Header
           title="Account"
           subtitle="Edit manage your account details"
-          icon={<Octicons name="settings" size={24} color="white" />}
+          icon={<MaterialCommunityIcons name="account" size={24} color="white" />}
         />
-        <Button title="Logout" onPress={() => firebase.auth().signOut()} />
+       
 
         {/* ACCOUNT SETTINGS CONTENT */}
         <View style={styles.settingsItems}>
           <MyInput title="Username" value={user.displayName} border />
-          <MyInput title="Email" value={user.email} border />
-          <MyInput title="Phone" value="5435345423" border />
-          <MyInput title="Password" secure border />
-          <MyInput title="Confirm password" secure />
+          <MyInput title="Email" value={user.email} border/>
+          <MyButton title="Logout" onPress={() => firebase.auth().signOut()} />
+        </View>
+
+        {/* APPLICATION SETTINGS HEADER */}
+        <Header
+          title="Application"
+          subtitle="Edit application settings"
+          icon={<Octicons name="settings" size={24} color="white" />}
+        />
+ 
+        {/* APPLICATION SETTINGS CONTENT */}
+        <View style={[styles.settingsItems, { marginBottom: 30 }]}>
+          <MyButton title="Currency" border />
+          <MyButton title="Categories" border />
+          <MyButton title="Notifications" onPress={() => toggleNotif()}/>
         </View>
 
         {/* FAQ HEADER */}
         <Header
-          title="Help & Feedpack"
+          title="Help & Feedback"
           subtitle="Reach us with your feedback question"
           icon={<MaterialIcons name="message" size={24} color="white" />}
         />
 
         {/* FAQ CONTENT */}
         <View style={[styles.settingsItems, { marginBottom: 30 }]}>
-          <MyButton title="FAQ and Videos" border />
-          <MyButton title="Contact us" />
-          <MyButton title="Contact us" />
-          <MyButton title="Contact us" />
+          <MyButton title="Help" border />
+          <MyButton title="Give us feedback" border />
+          <MyButton title="Rate the app" />
         </View>
       </ScrollView>
+
     </View>
   );
 }
-
-const MyButton = ({ title, border }) => {
+ 
+const MyButton = ({ title, border, onPress}) => {
   return (
     <TouchableOpacity
       style={[
@@ -70,6 +91,7 @@ const MyButton = ({ title, border }) => {
         { paddingTop: 15, paddingBottom: 20 },
         border && { borderBottomColor: "lightgray", borderBottomWidth: 1 },
       ]}
+      onPress = {onPress}
     >
       <View style={{ flexDirection: "row" }}>
         <Text style={{ flex: 1 }}>{title}</Text>

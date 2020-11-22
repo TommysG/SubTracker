@@ -1,5 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Button } from "react-native-paper";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function SubItem(props) {
   return (
@@ -23,6 +26,10 @@ export default function SubItem(props) {
         <View style={styles.dateContainer}>
           <Text style={styles.date}>{props.date}</Text>
         </View>
+
+        <TouchableOpacity style={styles.button}>
+          <FontAwesome5 name="trash" size={22} color="black" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -56,4 +63,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     color: "#8963c6",
   },
+
+  button: {
+    marginLeft: 15,
+    paddingTop: 10,
+  }
 });
