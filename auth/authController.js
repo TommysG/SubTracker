@@ -23,7 +23,6 @@ router.post("/signup", async (req, res, next) => {
     await new User({
       id: uid,
       email,
-      password,
       displayName: name,
     }).save();
 
